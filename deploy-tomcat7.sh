@@ -1,14 +1,15 @@
 echo "Building..." 
 
-# clean
+# Clean
 rm -rf deployment
 
-# SETUP VARIABLES 
+# Setup VARIABLES 
 TAG=${TRAVIS_TAG:=0.0.0}
 DIR="$(cd "$(dirname "$0")" && pwd)"
 CONTEXT=${CONTEXT:="ROOT"}
+PORT=${PORT:="8080"}
 
-# work with sources as managed by git 
+# Work with sources as managed by git 
 mkdir $DIR/deployment
 cd $DIR 
 git archive --format zip --output $DIR/deployment/sources.zip master
@@ -19,25 +20,37 @@ unzip $DIR/deployment/sources.zip -d $DIR/deployment/sources/.
 cd $DIR/deployment/sources
 ./sbt package
 cd $DIR/deployment/sources/target/scala-2.11/
-APP=$(ls *_2.11-${TAG}.war | sed 's/\(.*\)_2.11-.*\.war/\1/')
 
-# download TOMCAT 
+# More VARIABLES
+
+APP=$(ls *_2.11-${TAG}.war | sed 's/\(.*\)_2.11-.*\.war/\1/')
+TOMCAT=tomcat7-${APP}-${PORT}
+
+# Download TOMCAT 
 mkdir $DIR/deployment/tmp
 cd $DIR/deployment/tmp
 curl -L -J -O https://github.com/rehei/tomcat7-rehei/releases/download/7.0.63-07/apache-tomcat-7.0.63-windows-x64-rehei.zip
-unzip apache-tomcat-7.0.63-windows-x64-rehei.zip -d $DIR/deployment/tomcat7-${APP}
-cp $DIR/deployment/sources/target/scala-2.11/${APP}_2.11-${TAG}.war $DIR/deployment/tomcat7-${APP}/webapps/${CONTEXT}.war
+unzip apache-tomcat-7.0.63-windows-x64-rehei.zip -d $DIR/deployment/${TOMCAT}
+cp $DIR/deployment/sources/target/scala-2.11/${APP}_2.11-${TAG}.war $DIR/deployment/${TOMCAT}/webapps/${CONTEXT}.war
 rm -rf $DIR/deployment/tmp
 
-# copy sources to TOMCAT root 
+# Copy sources to TOMCAT root 
 cp $DIR/sources.zip $DIR/deployment/tomcat7-${APP}/.
 
 # Unpack package to TOMCAT webapps 
-mv $DIR/deployment/tomcat7-${APP}/webapps/${CONTEXT}.war $DIR/deployment/tomcat7-${APP}/webapps/${CONTEXT}.zip
-unzip $DIR/deployment/tomcat7-${APP}/webapps/${CONTEXT}.zip -d $DIR/deployment/tomcat7-${APP}/webapps/${CONTEXT}
-rm -rf $DIR/deployment/tomcat7-${APP}/webapps/${CONTEXT}.zip
+mv $DIR/deployment/${TOMCAT}/webapps/${CONTEXT}.war $DIR/deployment/${TOMCAT}/webapps/${CONTEXT}.zip
+unzip $DIR/deployment/${TOMCAT}/webapps/${CONTEXT}.zip -d $DIR/deployment/${TOMCAT}/webapps/${CONTEXT}
+rm -rf $DIR/deployment/${TOMCAT}/webapps/${CONTEXT}.zip
+
+# Adjust TOMCAT config
 cd $DIR/deployment
-zip -r $DIR/deployment/tomcat7-${APP}.zip tomcat7-${APP}
+curl -L -J -O https://github.com/rehei/tomcat7-rehei-xslt/releases/download/0.3.0/server.xslt
+SERVER_XML=$DIR/deployment/${TOMCAT}/conf/server.xml
+saxon-xslt -o ${SERVER_XML} ${SERVER_XML} server.xslt port=${PORT}
+
+# Package everything into one zip file 
+cd $DIR/deployment
+zip -r $DIR/deployment/${TOMCAT}.zip ${TOMCAT}
 
 echo "Done" 
 
