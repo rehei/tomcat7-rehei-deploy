@@ -1,5 +1,4 @@
-language: ruby
-script: ./build.sh  
+language: generic
 deploy:
   provider: releases
   api_key:
