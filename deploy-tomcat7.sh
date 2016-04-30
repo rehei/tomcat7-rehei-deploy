@@ -6,7 +6,7 @@ rm -rf deployment
 # SETUP VARIABLES 
 TAG=${TRAVIS_TAG:=0.0.0}
 DIR="$(cd "$(dirname "$0")" && pwd)"
-CONTEXT=air
+CONTEXT=${CONTEXT:="ROOT"}
 
 # work with sources as managed by git 
 mkdir $DIR/deployment
