@@ -24,7 +24,7 @@ APP=$(ls *_2.11-${TAG}.war | sed 's/\(.*\)_2.11-.*\.war/\1/')
 # download TOMCAT 
 mkdir $DIR/deployment/tmp
 cd $DIR/deployment/tmp
-curl -L -J -O https://github.com/rehei/tomcat7-rehei/releases/download/7.0.63-06/apache-tomcat-7.0.63-windows-x64-rehei.zip
+curl -L -J -O https://github.com/rehei/tomcat7-rehei/releases/download/7.0.63-07/apache-tomcat-7.0.63-windows-x64-rehei.zip
 unzip apache-tomcat-7.0.63-windows-x64-rehei.zip -d $DIR/deployment/tomcat7-${APP}
 cp $DIR/deployment/sources/target/scala-2.11/${APP}_2.11-${TAG}.war $DIR/deployment/tomcat7-${APP}/webapps/${CONTEXT}.war
 rm -rf $DIR/deployment/tmp
