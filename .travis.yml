@@ -1,0 +1,10 @@
+language: ruby
+script: ./build.sh  
+deploy:
+  provider: releases
+  api_key:
+    secure: HeEFKRWvxGSL3nbX+ifDmzxfBun91QXjsH4cvwDBUhOeyPN4SiycvxTmGaj2sVpR2JoLBFr3kBJqqN3M2tY9a0A9QOispoioPBEoKFNcwI9VRHVJ1sKBErwPhEzBZU5u4/2bNeoNh5rYsfBDAU+BkUSDwIcvpcP7q9I3FDwdbq2GkFkzP5NS8GAI2plmjclFo63RLXkqLdGufrHBQFICwVLHtUr35ZuEa9prbmKTDrGvNR+fgnmIMAEDBSVTc753hCKTER/0t1IkJfMbe9IxEW+308FKAQP99QPTJfEJFyFXVRAesXOZuwpGgPzFMlT8vdIkZ/5Enr3LWhVyEvousSvsyROk+lCf9f0onp3fBm3VbXsm6m/rEMNrhUtiXUtcRd2sh7fLPe5iRLfcW0SBjdk1iUTbge64H94kxlifHZZX2yfpvhJLQ/ThohYnLybQ6tJTSz8W+e/WPGkZbf44AOV+lTdwiJBNqoV5QH00rSiS3aGSAqe4zcOZkSQrffahWEEVBn8sZp3lHM+CkLNZgIdhpBoPHkQR5ANX9jS5fJ12WgB1HLoNTH3GlAQJMlGa2FZ9l4tRHURzHVyPgglADPr6MkBPzFkgerTIyroo2SrZAY3Okb9PC2qwBCInT2AbgbwHdpvjgGRJM6kDT5UmEYdjoFmoY1I/GZ4vFieQQm8=
+  file: deploy.sh
+  on:
+    tags: true
+    repo: rehei/tomcat7-rehei-deploy
