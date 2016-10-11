@@ -5,14 +5,16 @@ rm -rf deployment
 
 # Setup VARIABLES 
 TAG=${TRAVIS_TAG:=0.0.0}
-DIR="$(cd "$(dirname "$0")" && pwd)"
 CONTEXT=${CONTEXT:="ROOT"}
 PORT=${PORT:="8080"}
+BRANCH=${BRANCH:="master"}
+
+DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Work with sources as managed by git 
 mkdir $DIR/deployment
 cd $DIR 
-git archive --format zip --output $DIR/deployment/sources.zip master
+git archive --format zip --output $DIR/deployment/sources.zip $BRANCH
 mkdir $DIR/deployment/sources
 unzip $DIR/deployment/sources.zip -d $DIR/deployment/sources/. 
 
