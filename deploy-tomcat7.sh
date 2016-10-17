@@ -3,7 +3,8 @@ echo "Building..."
 # Clean
 rm -rf deployment
 
-# Setup VARIABLES 
+# Setup VARIABLES
+URL="https://github.com/rehei/tomcat7-rehei/releases/download/7.0.63-10/apache-tomcat-7.0.63-windows-x64-rehei.zip" 
 TAG=${TRAVIS_TAG:=0.0.0}
 CONTEXT=${CONTEXT:="ROOT"}
 PORT=${PORT:="8080"}
@@ -31,7 +32,7 @@ TOMCAT=tomcat7-${APP}-${PORT}
 # Download TOMCAT 
 mkdir $DIR/deployment/tmp
 cd $DIR/deployment/tmp
-curl -L -J -O https://github.com/rehei/tomcat7-rehei/releases/download/7.0.63-08/apache-tomcat-7.0.63-windows-x64-rehei.zip
+curl -L -J -O $URL
 unzip apache-tomcat-7.0.63-windows-x64-rehei.zip -d $DIR/deployment/${TOMCAT}
 cp $DIR/deployment/sources/target/scala-2.11/${APP}_2.11-${TAG}.war $DIR/deployment/${TOMCAT}/webapps/${CONTEXT}.war
 rm -rf $DIR/deployment/tmp
