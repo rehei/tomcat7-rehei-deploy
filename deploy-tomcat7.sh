@@ -1,8 +1,5 @@
 echo "Building..." 
 
-# Clean
-rm -rf deployment
-
 # Setup VARIABLES
 URL="https://github.com/rehei/tomcat7-rehei/releases/download/7.0.63-10/apache-tomcat-7.0.63-windows-x64-rehei.zip" 
 TAG=${TRAVIS_TAG:=0.0.0}
