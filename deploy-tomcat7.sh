@@ -50,11 +50,11 @@ rm -rf $DEPLOYMENT/${TOMCAT}/webapps/${CONTEXT}.zip
 
 # Adjust TOMCAT config
 cd $DEPLOYMENT
-curl -L -J -O https://github.com/rehei/tomcat7-rehei-xslt/releases/download/0.4.0/server.xslt
+curl -L -J -O https://github.com/rehei/tomcat7-rehei-xslt/releases/download/0.6.0/server.xslt
 SERVER_XML=$DEPLOYMENT/${TOMCAT}/conf/server.xml
 saxon-xslt -o ${SERVER_XML} ${SERVER_XML} server.xslt port=${PORT}
 
-curl -L -J -O https://github.com/rehei/tomcat7-rehei-xslt/releases/download/0.4.0/context.xslt
+curl -L -J -O https://github.com/rehei/tomcat7-rehei-xslt/releases/download/0.6.0/context.xslt
 CONTEXT_XML=$DEPLOYMENT/${TOMCAT}/conf/context.xml
 saxon-xslt -o ${CONTEXT_XML} ${CONTEXT_XML} context.xslt
 
